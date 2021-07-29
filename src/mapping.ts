@@ -1,74 +1,45 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import {
-  GammaRedeemerV1,
+  GammaRedeemer,
   OrderCreated,
   OrderFinished,
   OwnershipTransferred
-} from "../generated/GammaRedeemerV1/GammaRedeemerV1"
-import { ExampleEntity } from "../generated/schema"
+} from "../generated/GammaRedeemer/GammaRedeemer"
+import { Order } from "../generated/schema"
 
-export function handleOrderCreated(event: OrderCreated): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
+  let orderIdHex = orderId.toHex()
+  let order = Order.load(orderIdHex);
+  
+  if (order == null) {
+    order = new Order(orderIdHex)
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+    let gammRedeemer = GammaRedeemer.bind(address);
+    let orderObj = gammRedeemer.orders(orderId);
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+    order.owner = orderObj.value0;
+    order.otoken = orderObj.value1;
+    order.amount = orderObj.value2;
+    order.vaultId = orderObj.value3;
+    order.isSeller = orderObj.value4;
+    order.toETH = orderObj.value5;
+    order.finished = orderObj.value6;
+
+    order.save()
   }
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.orderId = event.params.orderId
-  entity.owner = event.params.owner
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.addressBook(...)
-  // - contract.automator(...)
-  // - contract.calculator(...)
-  // - contract.controller(...)
-  // - contract.getExcessCollateral(...)
-  // - contract.getOrdersLength(...)
-  // - contract.getRedeemPayout(...)
-  // - contract.getRedeemableAmount(...)
-  // - contract.getVault(...)
-  // - contract.getVaultOtoken(...)
-  // - contract.hasExpiredAndSettlementAllowed(...)
-  // - contract.isOperatorOf(...)
-  // - contract.isSettlementAllowed(...)
-  // - contract.isValidVaultId(...)
-  // - contract.isWhitelistedOtoken(...)
-  // - contract.orders(...)
-  // - contract.owner(...)
-  // - contract.shouldProcessOrder(...)
-  // - contract.shouldRedeemOtoken(...)
-  // - contract.shouldSettleVault(...)
-  // - contract.whitelist(...)
+  return order as Order;
 }
 
-export function handleOrderFinished(event: OrderFinished): void {}
+export function handleOrderCreated(event: OrderCreated): void {
+  getOrCreateOrder(event.params.orderId, event.address);
+}
+
+export function handleOrderFinished(event: OrderFinished): void {
+  let order = getOrCreateOrder(event.params.orderId, event.address);
+
+  order.finished = true;
+  order.save()
+}
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}

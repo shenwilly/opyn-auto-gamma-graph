@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: GammaRedeemer
@@ -19,7 +19,7 @@ dataSources:
         - OwnershipTransferred
       abis:
         - name: GammaRedeemer
-          file: ./abis/GammaRedeemer.json
+          file: GammaRedeemer/abis/GammaRedeemer.json
       eventHandlers:
         - event: OrderCreated(indexed uint256,indexed address,indexed address)
           handler: handleOrderCreated
@@ -27,4 +27,4 @@ dataSources:
           handler: handleOrderFinished
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-      file: ./src/mapping.ts
+      file: GammaRedeemer/GammaRedeemer.wasm
