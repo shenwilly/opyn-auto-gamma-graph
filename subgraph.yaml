@@ -1,0 +1,29 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: GammaRedeemerV1
+    network: ropsten
+    source:
+      address: "0x9c08febE5979CBc0F5a04ec55c644fa9d9B3F27F"
+      abi: GammaRedeemerV1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - OrderCreated
+        - OrderFinished
+        - OwnershipTransferred
+      abis:
+        - name: GammaRedeemerV1
+          file: ./abis/GammaRedeemerV1.json
+      eventHandlers:
+        - event: OrderCreated(indexed uint256,indexed address,indexed address)
+          handler: handleOrderCreated
+        - event: OrderFinished(indexed uint256,indexed bool)
+          handler: handleOrderFinished
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/mapping.ts
