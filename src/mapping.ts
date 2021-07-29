@@ -13,6 +13,7 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
   
   if (order == null) {
     order = new Order(orderIdHex)
+    order.orderId = orderId;
 
     let gammRedeemer = GammaRedeemer.bind(address);
     let orderObj = gammRedeemer.orders(orderId);

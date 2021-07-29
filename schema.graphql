@@ -1,5 +1,6 @@
 type Order @entity {
   id: ID!
+  orderId: BigInt!
   owner: Bytes! # address
   otoken: Bytes! # address
   amount: BigInt!

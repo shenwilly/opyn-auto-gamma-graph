@@ -42,6 +42,15 @@ export class Order extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get orderId(): BigInt {
+    let value = this.get("orderId");
+    return value.toBigInt();
+  }
+
+  set orderId(value: BigInt) {
+    this.set("orderId", Value.fromBigInt(value));
+  }
+
   get owner(): Bytes {
     let value = this.get("owner");
     return value.toBytes();
