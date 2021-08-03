@@ -40,6 +40,7 @@ export function handleOrderFinished(event: OrderFinished): void {
   let order = getOrCreateOrder(event.params.orderId, event.address);
 
   order.finished = true;
+  order.finishTxHash = event.transaction.hash;
   order.save()
 }
 

@@ -113,4 +113,21 @@ export class Order extends Entity {
   set finished(value: boolean) {
     this.set("finished", Value.fromBoolean(value));
   }
+
+  get finishTxHash(): Bytes | null {
+    let value = this.get("finishTxHash");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set finishTxHash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("finishTxHash");
+    } else {
+      this.set("finishTxHash", Value.fromBytes(value as Bytes));
+    }
+  }
 }

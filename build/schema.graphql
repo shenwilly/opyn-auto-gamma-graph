@@ -1,5 +1,6 @@
 type Order @entity {
   id: ID!
+  orderId: BigInt!
   owner: Bytes! # address
   otoken: Bytes! # address
   amount: BigInt!
@@ -7,4 +8,5 @@ type Order @entity {
   isSeller: Boolean!
   toETH: Boolean!
   finished: Boolean!
+  finishTxHash: Bytes
 }

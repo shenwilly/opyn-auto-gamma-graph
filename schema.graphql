@@ -8,4 +8,5 @@ type Order @entity {
   isSeller: Boolean!
   toETH: Boolean!
   finished: Boolean!
+  finishTxHash: Bytes
 }
