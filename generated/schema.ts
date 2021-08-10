@@ -105,6 +105,15 @@ export class Order extends Entity {
     this.set("toETH", Value.fromBoolean(value));
   }
 
+  get fee(): BigInt {
+    let value = this.get("fee");
+    return value.toBigInt();
+  }
+
+  set fee(value: BigInt) {
+    this.set("fee", Value.fromBigInt(value));
+  }
+
   get finished(): boolean {
     let value = this.get("finished");
     return value.toBoolean();

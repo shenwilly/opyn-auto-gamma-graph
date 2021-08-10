@@ -123,29 +123,71 @@ export class GammaRedeemer__getExcessCollateralInput_vaultStruct extends ethereu
   }
 }
 
-export class GammaRedeemer__getVaultResultValue0Struct extends ethereum.Tuple {
-  get shortOtokens(): Array<Address> {
-    return this[0].toAddressArray();
+export class GammaRedeemer__getOrderResultValue0Struct extends ethereum.Tuple {
+  get owner(): Address {
+    return this[0].toAddress();
   }
 
-  get longOtokens(): Array<Address> {
-    return this[1].toAddressArray();
+  get otoken(): Address {
+    return this[1].toAddress();
   }
 
-  get collateralAssets(): Array<Address> {
-    return this[2].toAddressArray();
+  get amount(): BigInt {
+    return this[2].toBigInt();
   }
 
-  get shortAmounts(): Array<BigInt> {
-    return this[3].toBigIntArray();
+  get vaultId(): BigInt {
+    return this[3].toBigInt();
   }
 
-  get longAmounts(): Array<BigInt> {
-    return this[4].toBigIntArray();
+  get isSeller(): boolean {
+    return this[4].toBoolean();
   }
 
-  get collateralAmounts(): Array<BigInt> {
-    return this[5].toBigIntArray();
+  get toETH(): boolean {
+    return this[5].toBoolean();
+  }
+
+  get fee(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get finished(): boolean {
+    return this[7].toBoolean();
+  }
+}
+
+export class GammaRedeemer__getOrdersResultValue0Struct extends ethereum.Tuple {
+  get owner(): Address {
+    return this[0].toAddress();
+  }
+
+  get otoken(): Address {
+    return this[1].toAddress();
+  }
+
+  get amount(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get vaultId(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get isSeller(): boolean {
+    return this[4].toBoolean();
+  }
+
+  get toETH(): boolean {
+    return this[5].toBoolean();
+  }
+
+  get fee(): BigInt {
+    return this[6].toBigInt();
+  }
+
+  get finished(): boolean {
+    return this[7].toBoolean();
   }
 }
 
@@ -175,6 +217,56 @@ export class GammaRedeemer__getVaultOtokenInput_vaultStruct extends ethereum.Tup
   }
 }
 
+export class GammaRedeemer__getVaultWithDetailsResultValue0Struct extends ethereum.Tuple {
+  get shortOtokens(): Array<Address> {
+    return this[0].toAddressArray();
+  }
+
+  get longOtokens(): Array<Address> {
+    return this[1].toAddressArray();
+  }
+
+  get collateralAssets(): Array<Address> {
+    return this[2].toAddressArray();
+  }
+
+  get shortAmounts(): Array<BigInt> {
+    return this[3].toBigIntArray();
+  }
+
+  get longAmounts(): Array<BigInt> {
+    return this[4].toBigIntArray();
+  }
+
+  get collateralAmounts(): Array<BigInt> {
+    return this[5].toBigIntArray();
+  }
+}
+
+export class GammaRedeemer__getVaultWithDetailsResult {
+  value0: GammaRedeemer__getVaultWithDetailsResultValue0Struct;
+  value1: BigInt;
+  value2: BigInt;
+
+  constructor(
+    value0: GammaRedeemer__getVaultWithDetailsResultValue0Struct,
+    value1: BigInt,
+    value2: BigInt
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromTuple(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    return map;
+  }
+}
+
 export class GammaRedeemer__ordersResult {
   value0: Address;
   value1: Address;
@@ -182,7 +274,8 @@ export class GammaRedeemer__ordersResult {
   value3: BigInt;
   value4: boolean;
   value5: boolean;
-  value6: boolean;
+  value6: BigInt;
+  value7: boolean;
 
   constructor(
     value0: Address,
@@ -191,7 +284,8 @@ export class GammaRedeemer__ordersResult {
     value3: BigInt,
     value4: boolean,
     value5: boolean,
-    value6: boolean
+    value6: BigInt,
+    value7: boolean
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -200,6 +294,7 @@ export class GammaRedeemer__ordersResult {
     this.value4 = value4;
     this.value5 = value5;
     this.value6 = value6;
+    this.value7 = value7;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -210,7 +305,8 @@ export class GammaRedeemer__ordersResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromBoolean(this.value4));
     map.set("value5", ethereum.Value.fromBoolean(this.value5));
-    map.set("value6", ethereum.Value.fromBoolean(this.value6));
+    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
+    map.set("value7", ethereum.Value.fromBoolean(this.value7));
     return map;
   }
 }
@@ -250,6 +346,29 @@ export class GammaRedeemer extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  automatorTreasury(): Address {
+    let result = super.call(
+      "automatorTreasury",
+      "automatorTreasury():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_automatorTreasury(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "automatorTreasury",
+      "automatorTreasury():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   calculator(): Address {
     let result = super.call("calculator", "calculator():(address)", []);
 
@@ -281,12 +400,16 @@ export class GammaRedeemer extends ethereum.SmartContract {
   }
 
   getExcessCollateral(
-    _vault: GammaRedeemer__getExcessCollateralInput_vaultStruct
+    _vault: GammaRedeemer__getExcessCollateralInput_vaultStruct,
+    _typeVault: BigInt
   ): GammaRedeemer__getExcessCollateralResult {
     let result = super.call(
       "getExcessCollateral",
-      "getExcessCollateral((address[],address[],address[],uint256[],uint256[],uint256[])):(uint256,bool)",
-      [ethereum.Value.fromTuple(_vault)]
+      "getExcessCollateral((address[],address[],address[],uint256[],uint256[],uint256[]),uint256):(uint256,bool)",
+      [
+        ethereum.Value.fromTuple(_vault),
+        ethereum.Value.fromUnsignedBigInt(_typeVault)
+      ]
     );
 
     return new GammaRedeemer__getExcessCollateralResult(
@@ -296,12 +419,16 @@ export class GammaRedeemer extends ethereum.SmartContract {
   }
 
   try_getExcessCollateral(
-    _vault: GammaRedeemer__getExcessCollateralInput_vaultStruct
+    _vault: GammaRedeemer__getExcessCollateralInput_vaultStruct,
+    _typeVault: BigInt
   ): ethereum.CallResult<GammaRedeemer__getExcessCollateralResult> {
     let result = super.tryCall(
       "getExcessCollateral",
-      "getExcessCollateral((address[],address[],address[],uint256[],uint256[],uint256[])):(uint256,bool)",
-      [ethereum.Value.fromTuple(_vault)]
+      "getExcessCollateral((address[],address[],address[],uint256[],uint256[],uint256[]),uint256):(uint256,bool)",
+      [
+        ethereum.Value.fromTuple(_vault),
+        ethereum.Value.fromUnsignedBigInt(_typeVault)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -312,6 +439,60 @@ export class GammaRedeemer extends ethereum.SmartContract {
         value[0].toBigInt(),
         value[1].toBoolean()
       )
+    );
+  }
+
+  getOrder(_orderId: BigInt): GammaRedeemer__getOrderResultValue0Struct {
+    let result = super.call(
+      "getOrder",
+      "getOrder(uint256):((address,address,uint256,uint256,bool,bool,uint256,bool))",
+      [ethereum.Value.fromUnsignedBigInt(_orderId)]
+    );
+
+    return result[0].toTuple() as GammaRedeemer__getOrderResultValue0Struct;
+  }
+
+  try_getOrder(
+    _orderId: BigInt
+  ): ethereum.CallResult<GammaRedeemer__getOrderResultValue0Struct> {
+    let result = super.tryCall(
+      "getOrder",
+      "getOrder(uint256):((address,address,uint256,uint256,bool,bool,uint256,bool))",
+      [ethereum.Value.fromUnsignedBigInt(_orderId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      value[0].toTuple() as GammaRedeemer__getOrderResultValue0Struct
+    );
+  }
+
+  getOrders(): Array<GammaRedeemer__getOrdersResultValue0Struct> {
+    let result = super.call(
+      "getOrders",
+      "getOrders():((address,address,uint256,uint256,bool,bool,uint256,bool)[])",
+      []
+    );
+
+    return result[0].toTupleArray<GammaRedeemer__getOrdersResultValue0Struct>();
+  }
+
+  try_getOrders(): ethereum.CallResult<
+    Array<GammaRedeemer__getOrdersResultValue0Struct>
+  > {
+    let result = super.tryCall(
+      "getOrders",
+      "getOrders():((address,address,uint256,uint256,bool,bool,uint256,bool)[])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      value[0].toTupleArray<GammaRedeemer__getOrdersResultValue0Struct>()
     );
   }
 
@@ -409,43 +590,6 @@ export class GammaRedeemer extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getVault(
-    _owner: Address,
-    _vaultId: BigInt
-  ): GammaRedeemer__getVaultResultValue0Struct {
-    let result = super.call(
-      "getVault",
-      "getVault(address,uint256):((address[],address[],address[],uint256[],uint256[],uint256[]))",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_vaultId)
-      ]
-    );
-
-    return result[0].toTuple() as GammaRedeemer__getVaultResultValue0Struct;
-  }
-
-  try_getVault(
-    _owner: Address,
-    _vaultId: BigInt
-  ): ethereum.CallResult<GammaRedeemer__getVaultResultValue0Struct> {
-    let result = super.tryCall(
-      "getVault",
-      "getVault(address,uint256):((address[],address[],address[],uint256[],uint256[],uint256[]))",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_vaultId)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      value[0].toTuple() as GammaRedeemer__getVaultResultValue0Struct
-    );
-  }
-
   getVaultOtoken(
     _vault: GammaRedeemer__getVaultOtokenInput_vaultStruct
   ): Address {
@@ -473,6 +617,51 @@ export class GammaRedeemer extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  getVaultWithDetails(
+    _owner: Address,
+    _vaultId: BigInt
+  ): GammaRedeemer__getVaultWithDetailsResult {
+    let result = super.call(
+      "getVaultWithDetails",
+      "getVaultWithDetails(address,uint256):((address[],address[],address[],uint256[],uint256[],uint256[]),uint256,uint256)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromUnsignedBigInt(_vaultId)
+      ]
+    );
+
+    return new GammaRedeemer__getVaultWithDetailsResult(
+      result[0].toTuple() as GammaRedeemer__getVaultWithDetailsResultValue0Struct,
+      result[1].toBigInt(),
+      result[2].toBigInt()
+    ) as GammaRedeemer__getVaultWithDetailsResult;
+  }
+
+  try_getVaultWithDetails(
+    _owner: Address,
+    _vaultId: BigInt
+  ): ethereum.CallResult<GammaRedeemer__getVaultWithDetailsResult> {
+    let result = super.tryCall(
+      "getVaultWithDetails",
+      "getVaultWithDetails(address,uint256):((address[],address[],address[],uint256[],uint256[],uint256[]),uint256,uint256)",
+      [
+        ethereum.Value.fromAddress(_owner),
+        ethereum.Value.fromUnsignedBigInt(_vaultId)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new GammaRedeemer__getVaultWithDetailsResult(
+        value[0].toTuple() as GammaRedeemer__getVaultWithDetailsResultValue0Struct,
+        value[1].toBigInt(),
+        value[2].toBigInt()
+      ) as GammaRedeemer__getVaultWithDetailsResult
+    );
+  }
+
   hasExpiredAndSettlementAllowed(_otoken: Address): boolean {
     let result = super.call(
       "hasExpiredAndSettlementAllowed",
@@ -490,6 +679,29 @@ export class GammaRedeemer extends ethereum.SmartContract {
       "hasExpiredAndSettlementAllowed",
       "hasExpiredAndSettlementAllowed(address):(bool)",
       [ethereum.Value.fromAddress(_otoken)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  isAutomatorEnabled(): boolean {
+    let result = super.call(
+      "isAutomatorEnabled",
+      "isAutomatorEnabled():(bool)",
+      []
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isAutomatorEnabled(): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isAutomatorEnabled",
+      "isAutomatorEnabled():(bool)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -598,7 +810,7 @@ export class GammaRedeemer extends ethereum.SmartContract {
   orders(param0: BigInt): GammaRedeemer__ordersResult {
     let result = super.call(
       "orders",
-      "orders(uint256):(address,address,uint256,uint256,bool,bool,bool)",
+      "orders(uint256):(address,address,uint256,uint256,bool,bool,uint256,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -609,14 +821,15 @@ export class GammaRedeemer extends ethereum.SmartContract {
       result[3].toBigInt(),
       result[4].toBoolean(),
       result[5].toBoolean(),
-      result[6].toBoolean()
+      result[6].toBigInt(),
+      result[7].toBoolean()
     );
   }
 
   try_orders(param0: BigInt): ethereum.CallResult<GammaRedeemer__ordersResult> {
     let result = super.tryCall(
       "orders",
-      "orders(uint256):(address,address,uint256,uint256,bool,bool,bool)",
+      "orders(uint256):(address,address,uint256,uint256,bool,bool,uint256,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -631,7 +844,8 @@ export class GammaRedeemer extends ethereum.SmartContract {
         value[3].toBigInt(),
         value[4].toBoolean(),
         value[5].toBoolean(),
-        value[6].toBoolean()
+        value[6].toBigInt(),
+        value[7].toBoolean()
       )
     );
   }
@@ -649,6 +863,36 @@ export class GammaRedeemer extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  redeemFee(): BigInt {
+    let result = super.call("redeemFee", "redeemFee():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_redeemFee(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("redeemFee", "redeemFee():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  settleFee(): BigInt {
+    let result = super.call("settleFee", "settleFee():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_settleFee(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("settleFee", "settleFee():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   shouldProcessOrder(_orderId: BigInt): boolean {
@@ -785,6 +1029,10 @@ export class ConstructorCall__Inputs {
   get _automator(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
+
+  get _automatorTreasury(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
 }
 
 export class ConstructorCall__Outputs {
@@ -863,6 +1111,44 @@ export class CreateOrderCall__Outputs {
   }
 }
 
+export class HarvestCall extends ethereum.Call {
+  get inputs(): HarvestCall__Inputs {
+    return new HarvestCall__Inputs(this);
+  }
+
+  get outputs(): HarvestCall__Outputs {
+    return new HarvestCall__Outputs(this);
+  }
+}
+
+export class HarvestCall__Inputs {
+  _call: HarvestCall;
+
+  constructor(call: HarvestCall) {
+    this._call = call;
+  }
+
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _amount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get _to(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class HarvestCall__Outputs {
+  _call: HarvestCall;
+
+  constructor(call: HarvestCall) {
+    this._call = call;
+  }
+}
+
 export class ProcessOrderCall extends ethereum.Call {
   get inputs(): ProcessOrderCall__Inputs {
     return new ProcessOrderCall__Inputs(this);
@@ -889,6 +1175,36 @@ export class ProcessOrderCall__Outputs {
   _call: ProcessOrderCall;
 
   constructor(call: ProcessOrderCall) {
+    this._call = call;
+  }
+}
+
+export class ProcessOrdersCall extends ethereum.Call {
+  get inputs(): ProcessOrdersCall__Inputs {
+    return new ProcessOrdersCall__Inputs(this);
+  }
+
+  get outputs(): ProcessOrdersCall__Outputs {
+    return new ProcessOrdersCall__Outputs(this);
+  }
+}
+
+export class ProcessOrdersCall__Inputs {
+  _call: ProcessOrdersCall;
+
+  constructor(call: ProcessOrdersCall) {
+    this._call = call;
+  }
+
+  get _orderIds(): Array<BigInt> {
+    return this._call.inputValues[0].value.toBigIntArray();
+  }
+}
+
+export class ProcessOrdersCall__Outputs {
+  _call: ProcessOrdersCall;
+
+  constructor(call: ProcessOrdersCall) {
     this._call = call;
   }
 }
@@ -975,6 +1291,182 @@ export class SetAddressBookCall__Outputs {
   }
 }
 
+export class SetAutomatorCall extends ethereum.Call {
+  get inputs(): SetAutomatorCall__Inputs {
+    return new SetAutomatorCall__Inputs(this);
+  }
+
+  get outputs(): SetAutomatorCall__Outputs {
+    return new SetAutomatorCall__Outputs(this);
+  }
+}
+
+export class SetAutomatorCall__Inputs {
+  _call: SetAutomatorCall;
+
+  constructor(call: SetAutomatorCall) {
+    this._call = call;
+  }
+
+  get _automator(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetAutomatorCall__Outputs {
+  _call: SetAutomatorCall;
+
+  constructor(call: SetAutomatorCall) {
+    this._call = call;
+  }
+}
+
+export class SetAutomatorTreasuryCall extends ethereum.Call {
+  get inputs(): SetAutomatorTreasuryCall__Inputs {
+    return new SetAutomatorTreasuryCall__Inputs(this);
+  }
+
+  get outputs(): SetAutomatorTreasuryCall__Outputs {
+    return new SetAutomatorTreasuryCall__Outputs(this);
+  }
+}
+
+export class SetAutomatorTreasuryCall__Inputs {
+  _call: SetAutomatorTreasuryCall;
+
+  constructor(call: SetAutomatorTreasuryCall) {
+    this._call = call;
+  }
+
+  get _automatorTreasury(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetAutomatorTreasuryCall__Outputs {
+  _call: SetAutomatorTreasuryCall;
+
+  constructor(call: SetAutomatorTreasuryCall) {
+    this._call = call;
+  }
+}
+
+export class SetRedeemFeeCall extends ethereum.Call {
+  get inputs(): SetRedeemFeeCall__Inputs {
+    return new SetRedeemFeeCall__Inputs(this);
+  }
+
+  get outputs(): SetRedeemFeeCall__Outputs {
+    return new SetRedeemFeeCall__Outputs(this);
+  }
+}
+
+export class SetRedeemFeeCall__Inputs {
+  _call: SetRedeemFeeCall;
+
+  constructor(call: SetRedeemFeeCall) {
+    this._call = call;
+  }
+
+  get _redeemFee(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetRedeemFeeCall__Outputs {
+  _call: SetRedeemFeeCall;
+
+  constructor(call: SetRedeemFeeCall) {
+    this._call = call;
+  }
+}
+
+export class SetSettleFeeCall extends ethereum.Call {
+  get inputs(): SetSettleFeeCall__Inputs {
+    return new SetSettleFeeCall__Inputs(this);
+  }
+
+  get outputs(): SetSettleFeeCall__Outputs {
+    return new SetSettleFeeCall__Outputs(this);
+  }
+}
+
+export class SetSettleFeeCall__Inputs {
+  _call: SetSettleFeeCall;
+
+  constructor(call: SetSettleFeeCall) {
+    this._call = call;
+  }
+
+  get _settleFee(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetSettleFeeCall__Outputs {
+  _call: SetSettleFeeCall;
+
+  constructor(call: SetSettleFeeCall) {
+    this._call = call;
+  }
+}
+
+export class StartAutomatorCall extends ethereum.Call {
+  get inputs(): StartAutomatorCall__Inputs {
+    return new StartAutomatorCall__Inputs(this);
+  }
+
+  get outputs(): StartAutomatorCall__Outputs {
+    return new StartAutomatorCall__Outputs(this);
+  }
+}
+
+export class StartAutomatorCall__Inputs {
+  _call: StartAutomatorCall;
+
+  constructor(call: StartAutomatorCall) {
+    this._call = call;
+  }
+
+  get _resolver(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class StartAutomatorCall__Outputs {
+  _call: StartAutomatorCall;
+
+  constructor(call: StartAutomatorCall) {
+    this._call = call;
+  }
+}
+
+export class StopAutomatorCall extends ethereum.Call {
+  get inputs(): StopAutomatorCall__Inputs {
+    return new StopAutomatorCall__Inputs(this);
+  }
+
+  get outputs(): StopAutomatorCall__Outputs {
+    return new StopAutomatorCall__Outputs(this);
+  }
+}
+
+export class StopAutomatorCall__Inputs {
+  _call: StopAutomatorCall;
+
+  constructor(call: StopAutomatorCall) {
+    this._call = call;
+  }
+}
+
+export class StopAutomatorCall__Outputs {
+  _call: StopAutomatorCall;
+
+  constructor(call: StopAutomatorCall) {
+    this._call = call;
+  }
+}
+
 export class TransferOwnershipCall extends ethereum.Call {
   get inputs(): TransferOwnershipCall__Inputs {
     return new TransferOwnershipCall__Inputs(this);
@@ -1022,8 +1514,12 @@ export class WithdrawFundCall__Inputs {
     this._call = call;
   }
 
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
   get _amount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 }
 

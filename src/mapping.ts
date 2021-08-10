@@ -24,7 +24,8 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
     order.vaultId = orderObj.value3;
     order.isSeller = orderObj.value4;
     order.toETH = orderObj.value5;
-    order.finished = orderObj.value6;
+    order.fee = orderObj.value6;
+    order.finished = orderObj.value7;
 
     order.save()
   }

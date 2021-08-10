@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: GammaRedeemer
-    network: ropsten
+    network: mainnet
     source:
-      address: "0x9c08febE5979CBc0F5a04ec55c644fa9d9B3F27F"
+      address: "0xa9bc42ac855be4026ce3ce031f91c8f796122282"
       abi: GammaRedeemer
-      startBlock: 10710798
+      startBlock: 12988831
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
