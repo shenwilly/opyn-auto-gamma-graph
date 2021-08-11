@@ -9,5 +9,7 @@ type Order @entity {
   toETH: Boolean!
   fee: BigInt!
   finished: Boolean!
+  cancelled: Boolean!
   finishTxHash: Bytes
+  timestamp: BigInt!
 }

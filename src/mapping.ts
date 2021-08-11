@@ -26,6 +26,8 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
     order.toETH = orderObj.value5;
     order.fee = orderObj.value6;
     order.finished = orderObj.value7;
+    order.cancelled = false;
+    order.timestamp = BigInt.fromI32(0);
 
     order.save()
   }
@@ -34,13 +36,17 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
 }
 
 export function handleOrderCreated(event: OrderCreated): void {
-  getOrCreateOrder(event.params.orderId, event.address);
+  let order = getOrCreateOrder(event.params.orderId, event.address);
+  
+  order.timestamp = event.block.timestamp;
+  order.save();
 }
 
 export function handleOrderFinished(event: OrderFinished): void {
   let order = getOrCreateOrder(event.params.orderId, event.address);
 
   order.finished = true;
+  order.cancelled = event.params.cancelled;
   order.finishTxHash = event.transaction.hash;
   order.save()
 }

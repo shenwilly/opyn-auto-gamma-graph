@@ -123,6 +123,15 @@ export class Order extends Entity {
     this.set("finished", Value.fromBoolean(value));
   }
 
+  get cancelled(): boolean {
+    let value = this.get("cancelled");
+    return value.toBoolean();
+  }
+
+  set cancelled(value: boolean) {
+    this.set("cancelled", Value.fromBoolean(value));
+  }
+
   get finishTxHash(): Bytes | null {
     let value = this.get("finishTxHash");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -138,5 +147,14 @@ export class Order extends Entity {
     } else {
       this.set("finishTxHash", Value.fromBytes(value as Bytes));
     }
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }
