@@ -6,7 +6,7 @@ dataSources:
     name: GammaRedeemer
     network: mainnet
     source:
-      address: "0x4687129e66a17af63b903e7ce0eae3576623ac90"
+      address: "0xCD92f7bd79e5b0f7D0E20fE7eFDf3FafB70e3904"
       abi: GammaRedeemer
       startBlock: 13016425 
     mapping:
