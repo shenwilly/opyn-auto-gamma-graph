@@ -6,9 +6,9 @@ dataSources:
     name: GammaRedeemer
     network: mainnet
     source:
-      address: "0xa9bc42ac855be4026ce3ce031f91c8f796122282"
+      address: "0x4687129e66a17af63b903e7ce0eae3576623ac90"
       abi: GammaRedeemer
-      startBlock: 12988831
+      startBlock: 13016425 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
