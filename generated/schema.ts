@@ -96,13 +96,13 @@ export class Order extends Entity {
     this.set("isSeller", Value.fromBoolean(value));
   }
 
-  get toETH(): boolean {
-    let value = this.get("toETH");
-    return value.toBoolean();
+  get toToken(): Bytes {
+    let value = this.get("toToken");
+    return value.toBytes();
   }
 
-  set toETH(value: boolean) {
-    this.set("toETH", Value.fromBoolean(value));
+  set toToken(value: Bytes) {
+    this.set("toToken", Value.fromBytes(value));
   }
 
   get fee(): BigInt {

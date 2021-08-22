@@ -1,10 +1,10 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import {
-  GammaRedeemer,
+  AutoGamma,
   OrderCreated,
   OrderFinished,
   OwnershipTransferred
-} from "../generated/GammaRedeemer/GammaRedeemer"
+} from "../generated/AutoGamma/AutoGamma"
 import { Order } from "../generated/schema"
 
 const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
@@ -15,15 +15,15 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
     order = new Order(orderIdHex)
     order.orderId = orderId;
 
-    let gammRedeemer = GammaRedeemer.bind(address);
-    let orderObj = gammRedeemer.orders(orderId);
+    let autoGamma = AutoGamma.bind(address);
+    let orderObj = autoGamma.orders(orderId);
 
     order.owner = orderObj.value0;
     order.otoken = orderObj.value1;
     order.amount = orderObj.value2;
     order.vaultId = orderObj.value3;
     order.isSeller = orderObj.value4;
-    order.toETH = orderObj.value5;
+    order.toToken = orderObj.value5;
     order.fee = orderObj.value6;
     order.finished = orderObj.value7;
     order.cancelled = false;

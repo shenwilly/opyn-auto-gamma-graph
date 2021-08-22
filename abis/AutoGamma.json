@@ -8,6 +8,11 @@
       },
       {
         "internalType": "address",
+        "name": "_uniRouter",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_automator",
         "type": "address"
       },
@@ -97,6 +102,24 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token0",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_token1",
+        "type": "address"
+      }
+    ],
+    "name": "allowPair",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "automator",
     "outputs": [
@@ -177,9 +200,32 @@
         "internalType": "uint256",
         "name": "_vaultId",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_toToken",
+        "type": "address"
       }
     ],
     "name": "createOrder",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token0",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_token1",
+        "type": "address"
+      }
+    ],
+    "name": "disallowPair",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -283,9 +329,9 @@
             "type": "bool"
           },
           {
-            "internalType": "bool",
-            "name": "toETH",
-            "type": "bool"
+            "internalType": "address",
+            "name": "toToken",
+            "type": "address"
           },
           {
             "internalType": "uint256",
@@ -298,7 +344,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct IGammaRedeemerV1.Order",
+        "internalType": "struct IAutoGamma.Order",
         "name": "",
         "type": "tuple"
       }
@@ -338,9 +384,9 @@
             "type": "bool"
           },
           {
-            "internalType": "bool",
-            "name": "toETH",
-            "type": "bool"
+            "internalType": "address",
+            "name": "toToken",
+            "type": "address"
           },
           {
             "internalType": "uint256",
@@ -353,7 +399,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct IGammaRedeemerV1.Order[]",
+        "internalType": "struct IAutoGamma.Order[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -369,6 +415,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_otoken",
+        "type": "address"
+      }
+    ],
+    "name": "getOtokenCollateral",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -430,6 +495,86 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_vaultId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getVault",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address[]",
+            "name": "shortOtokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "longOtokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "collateralAssets",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "shortAmounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "longAmounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "collateralAmounts",
+            "type": "uint256[]"
+          }
+        ],
+        "internalType": "struct MarginVault.Vault",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_vaultId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getVaultOtoken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "address[]",
@@ -467,7 +612,7 @@
         "type": "tuple"
       }
     ],
-    "name": "getVaultOtoken",
+    "name": "getVaultOtokenByVault",
     "outputs": [
       {
         "internalType": "address",
@@ -622,6 +767,30 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_token0",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_token1",
+        "type": "address"
+      }
+    ],
+    "name": "isPairAllowed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_otoken",
         "type": "address"
       }
@@ -716,9 +885,9 @@
         "type": "bool"
       },
       {
-        "internalType": "bool",
-        "name": "toETH",
-        "type": "bool"
+        "internalType": "address",
+        "name": "toToken",
+        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -753,6 +922,23 @@
         "internalType": "uint256",
         "name": "_orderId",
         "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "swapAmountOutMin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address[]",
+            "name": "swapPath",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct IAutoGamma.ProcessOrderArgs",
+        "name": "orderArgs",
+        "type": "tuple"
       }
     ],
     "name": "processOrder",
@@ -766,6 +952,23 @@
         "internalType": "uint256[]",
         "name": "_orderIds",
         "type": "uint256[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "swapAmountOutMin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address[]",
+            "name": "swapPath",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct IAutoGamma.ProcessOrderArgs[]",
+        "name": "_orderArgs",
+        "type": "tuple[]"
       }
     ],
     "name": "processOrders",
@@ -861,6 +1064,19 @@
       }
     ],
     "name": "setSettleFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_uniRouter",
+        "type": "address"
+      }
+    ],
+    "name": "setUniRouter",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -981,6 +1197,43 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "uniPair",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "uniRouter",
+    "outputs": [
+      {
+        "internalType": "contract IUniswapRouter",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

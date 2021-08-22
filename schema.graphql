@@ -6,7 +6,7 @@ type Order @entity {
   amount: BigInt!
   vaultId: BigInt!
   isSeller: Boolean!
-  toETH: Boolean!
+  toToken: Bytes!
   fee: BigInt!
   finished: Boolean!
   cancelled: Boolean!
