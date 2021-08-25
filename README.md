@@ -1,1 +1,1 @@
-# Opyn Gamma Automator Subgraph
+# AutoGamma Subgraph
