@@ -26,5 +26,10 @@ dataSources:
         - event: OrderFinished(indexed uint256,indexed bool)
           handler: handleOrderFinished
         - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
+          handler: handleOwnershipTransferred      
+      callHandlers:
+        - function: allowPair(address,address)
+          handler: handleAllowPair
+        - function: disallowPair(address,address)
+          handler: handleDisallowPair
       file: ./src/mapping.ts

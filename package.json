@@ -1,13 +1,13 @@
 {
-  "name": "opyn-auto",
+  "name": "auto-gamma",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ shenwilly/opyn-auto",
-    "create-local": "graph create --node http://localhost:8020/ shenwilly/opyn-auto",
-    "remove-local": "graph remove --node http://localhost:8020/ shenwilly/opyn-auto",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 shenwilly/opyn-auto"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ shenwilly/auto-gamma",
+    "create-local": "graph create --node http://localhost:8020/ shenwilly/auto-gamma",
+    "remove-local": "graph remove --node http://localhost:8020/ shenwilly/auto-gamma",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 shenwilly/auto-gamma"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.21.1",

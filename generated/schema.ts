@@ -158,3 +158,61 @@ export class Order extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 }
+
+export class Pair extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Pair entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Pair entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Pair", id.toString(), this);
+  }
+
+  static load(id: string): Pair | null {
+    return store.get("Pair", id) as Pair | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token0(): Bytes {
+    let value = this.get("token0");
+    return value.toBytes();
+  }
+
+  set token0(value: Bytes) {
+    this.set("token0", Value.fromBytes(value));
+  }
+
+  get token1(): Bytes {
+    let value = this.get("token1");
+    return value.toBytes();
+  }
+
+  set token1(value: Bytes) {
+    this.set("token1", Value.fromBytes(value));
+  }
+
+  get allowed(): boolean {
+    let value = this.get("allowed");
+    return value.toBoolean();
+  }
+
+  set allowed(value: boolean) {
+    this.set("allowed", Value.fromBoolean(value));
+  }
+}

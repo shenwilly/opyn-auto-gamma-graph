@@ -13,3 +13,10 @@ type Order @entity {
   finishTxHash: Bytes
   timestamp: BigInt!
 }
+
+type Pair @entity {
+  id: ID!
+  token0: Bytes! # address
+  token1: Bytes! # address
+  allowed: Boolean!
+}

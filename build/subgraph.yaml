@@ -3,12 +3,12 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: GammaRedeemer
+    name: AutoGamma
     network: mainnet
     source:
-      address: "0xCD92f7bd79e5b0f7D0E20fE7eFDf3FafB70e3904"
-      abi: GammaRedeemer
-      startBlock: 13016425
+      address: "0x3519cfc47c3dbc2f6d916557bd5a4ae96c33b95c"
+      abi: AutoGamma
+      startBlock: 13073278
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -18,8 +18,8 @@ dataSources:
         - OrderFinished
         - OwnershipTransferred
       abis:
-        - name: GammaRedeemer
-          file: GammaRedeemer/abis/GammaRedeemer.json
+        - name: AutoGamma
+          file: AutoGamma/abis/AutoGamma.json
       eventHandlers:
         - event: OrderCreated(indexed uint256,indexed address,indexed address)
           handler: handleOrderCreated
@@ -27,4 +27,9 @@ dataSources:
           handler: handleOrderFinished
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-      file: GammaRedeemer/GammaRedeemer.wasm
+      callHandlers:
+        - function: allowPair(address,address)
+          handler: handleAllowPair
+        - function: disallowPair(address,address)
+          handler: handleDisallowPair
+      file: AutoGamma/AutoGamma.wasm

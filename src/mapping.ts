@@ -3,9 +3,11 @@ import {
   AutoGamma,
   OrderCreated,
   OrderFinished,
-  OwnershipTransferred
+  OwnershipTransferred,
+  AllowPairCall,
+  DisallowPairCall
 } from "../generated/AutoGamma/AutoGamma"
-import { Order } from "../generated/schema"
+import { Order, Pair } from "../generated/schema"
 
 const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
   let orderIdHex = orderId.toHex()
@@ -35,6 +37,26 @@ const getOrCreateOrder = (orderId: BigInt, address: Address): Order => {
   return order as Order;
 }
 
+const getOrCreatePair = (token0: Address, token1: Address): Pair => {
+  let tokens = new Array<string>(2);
+  tokens.push(token0.toString());
+  tokens.push(token1.toString());
+  tokens.sort()
+
+  let pairId = tokens[0] + "-" + tokens[1];
+  let pair = Pair.load(pairId);
+  
+  if (pair == null) {
+    pair = new Pair(pairId);
+    pair.token0 = token0;
+    pair.token1 = token1;
+    pair.allowed = true;
+    pair.save();
+  }
+
+  return pair as Pair;
+}
+
 export function handleOrderCreated(event: OrderCreated): void {
   let order = getOrCreateOrder(event.params.orderId, event.address);
   
@@ -52,3 +74,13 @@ export function handleOrderFinished(event: OrderFinished): void {
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+
+export function handleAllowPair(call: AllowPairCall): void {
+  getOrCreatePair(call.inputs._token0, call.inputs._token1);
+}
+
+export function handleDisallowPair(call: DisallowPairCall): void {
+  let pair = getOrCreatePair(call.inputs._token0, call.inputs._token1);
+  pair.allowed = false;
+  pair.save();
+}

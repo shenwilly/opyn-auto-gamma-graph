@@ -6,10 +6,17 @@ type Order @entity {
   amount: BigInt!
   vaultId: BigInt!
   isSeller: Boolean!
-  toETH: Boolean!
+  toToken: Bytes!
   fee: BigInt!
   finished: Boolean!
   cancelled: Boolean!
   finishTxHash: Bytes
   timestamp: BigInt!
+}
+
+type Pair @entity {
+  id: ID!
+  token0: Bytes! # address
+  token1: Bytes! # address
+  allowed: Boolean!
 }
